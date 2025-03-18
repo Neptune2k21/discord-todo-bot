@@ -53,7 +53,7 @@ class DataManager {
     }
 
     getUserTasks(userId, serverId) {
-        return this.tasks.filter(task => task.userId === userId && task.serverId === serverId);
+        return this.tasks.filter(task => task.serverId === serverId);
     }
     
     getServerTasks(serverId) {
@@ -62,7 +62,7 @@ class DataManager {
 
     completeTask(taskId, userId, serverId) {
         const taskIndex = this.tasks.findIndex(t => 
-            t.id === taskId && t.userId === userId && t.serverId === serverId);
+            t.id === taskId && t.serverId === serverId);
             
         if (taskIndex === -1) return null;
         
@@ -74,7 +74,7 @@ class DataManager {
 
     deleteTask(taskId, userId, serverId) {
         const taskIndex = this.tasks.findIndex(t => 
-            t.id === taskId && t.userId === userId && t.serverId === serverId);
+            t.id === taskId && t.serverId === serverId);
             
         if (taskIndex === -1) return null;
         
@@ -86,7 +86,7 @@ class DataManager {
 
     assignTask(taskId, userId, serverId, assignedToId) {
         const taskIndex = this.tasks.findIndex(t => 
-            t.id === taskId && t.userId === userId && t.serverId === serverId);
+            t.id === taskId && t.serverId === serverId);
             
         if (taskIndex === -1) return null;
         
@@ -97,7 +97,7 @@ class DataManager {
 
     setTaskInProgress(taskId, userId, serverId) {
         const taskIndex = this.tasks.findIndex(t => 
-            t.id === taskId && t.userId === userId && t.serverId === serverId);
+            t.id === taskId && t.serverId === serverId);
             
         if (taskIndex === -1) return null;
         

@@ -3,22 +3,19 @@ const { EmbedBuilder } = require('discord.js');
 
 module.exports = {
     name: 'list',
-    description: 'Afficher la liste des tâches',
+    description: 'Afficher la liste des tâches du serveur',
     execute(message, args) {
         try {
-            const tasks = dataManager.getUserTasks(
-                message.author.id,
-                message.guild.id
-            ).sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+            const tasks = dataManager.getServerTasks(message.guild.id)
+                .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
             
             if (tasks.length === 0) {
-                return message.reply('Vous n\'avez pas de tâches à faire.');
+                return message.reply('Il n\'y a pas de tâches à faire sur ce serveur.');
             }
 
             const embed = new EmbedBuilder()
                 .setColor('#0099ff')
-                .setTitle('📋 Votre Liste de Tâches')
-                .setAuthor({ name: message.author.username, iconURL: message.author.displayAvatarURL() })
+                .setTitle('📋 Liste des Tâches du Serveur')
                 .setTimestamp();
             
             tasks.forEach((task, index) => {
@@ -33,16 +30,19 @@ module.exports = {
                 }
                 
                 const createdDate = new Date(task.createdAt).toLocaleDateString('fr-FR');
+                const createdBy = message.guild.members.cache.get(task.userId);
+                const creatorInfo = createdBy ? `\nCréée par: ${createdBy.user.username}` : '';
+                
                 embed.addFields({ 
                     name: `${index + 1}. ${task.description}`, 
-                    value: `Statut: ${status}${assignedInfo}\nCréée le ${createdDate}` 
+                    value: `Statut: ${status}${assignedInfo}${creatorInfo}\nCréée le ${createdDate}` 
                 });
             });
 
             message.channel.send({ embeds: [embed] });
         } catch (error) {
             console.error(error);
-            return message.reply('Une erreur est survenue lors de la récupération de vos tâches.');
+            return message.reply('Une erreur est survenue lors de la récupération des tâches.');
         }
     }
 };
